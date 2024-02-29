@@ -2,6 +2,7 @@
 captured_data/
 managed_context/
 test_suite_analysis/
+monitorizacion/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
