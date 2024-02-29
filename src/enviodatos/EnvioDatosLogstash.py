@@ -43,10 +43,8 @@ class EnvioDatosLogstash(object):
             url = "http://" + str(self.host) + ":9200/bypgg-" + str(index_name) + "/_settings"
             headers = {"Content-Type": "application/json"}
             # visualizacion
-            # auth = ('elastic', 'C8dZZgL6EDjT2zdq7bzk')
             auth = ('elastic', 'changeme')
             # monitorizacion
-            # auth = ('elastic', 'i9HQ45P8WQ3gd7yPdf')
             data = {"index": {"max_docvalue_fields_search": "10000000", "mapping": {"total_fields": {"limit": "100000"}}}}
             time.sleep(5)
             response = requests.put(url, headers=headers, auth=auth, data=json.dumps(data))
