@@ -5,7 +5,6 @@ Created on 14 jun. 2018
 '''
 from utils.ConfigReader import ConfigReader
 import os
-from net.NetSniffer import NetSniffer
 
 # patrones
 from lectura_logs.patrones.connPatron import connPatron
@@ -15,6 +14,7 @@ from lectura_logs.patrones.sshPatron import sshPatron
 from lectura_logs.patrones.dnsPatron import dnsPatron
 from lectura_logs.patrones.pcapLivePatron import pcapLivePatron
 from enviodatos.EnvioDatosLogstash import EnvioDatosLogstash
+from net.NetSniffer import NetSniffer
 
 # procesamiento de logs
 logs_patterns_types = {

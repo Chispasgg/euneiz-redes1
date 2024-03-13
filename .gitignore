@@ -3,6 +3,7 @@ captured_data/
 managed_context/
 test_suite_analysis/
 monitorizacion/
+conf/conf_tmp.ini
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

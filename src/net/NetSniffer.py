@@ -69,8 +69,16 @@ class NetSniffer(object):
         return data_dict
 
     def __capture_resume(self, capture):
+        print("Mostrar Unicamente los datos campturados para analizar")        
         for packet in capture.sniff_continuously():
             print(packet)
+        
+        # for packet in capture.sniff_continuously():
+        #     print(".", end="")
+        #     if 'DNS' in packet.layers:
+        #         print(packet)
+        #     elif 'HTTP' in packet.layers:
+        #         print(packet)
     
     def __capture_all(self, capture):
         for packet in capture.sniff_continuously():
@@ -113,9 +121,10 @@ class NetSniffer(object):
 
     def __init_capture(self):
         
-        capture = pyshark.LiveCapture(only_summaries=self.solo_resumen)
-        capture.interfaces = self.interfaces
-        capture.bpf_filter = self.filters
+        capture = pyshark.LiveCapture(
+            interface=self.interfaces,
+            bpf_filter=self.filters
+            )
         
         if self.solo_resumen:
             self.__capture_resume(capture)
