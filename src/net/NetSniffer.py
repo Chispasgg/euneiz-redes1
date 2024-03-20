@@ -70,15 +70,18 @@ class NetSniffer(object):
 
     def __capture_resume(self, capture):
         print("Mostrar Unicamente los datos campturados para analizar")        
-        for packet in capture.sniff_continuously():
-            print(packet)
-        
         # for packet in capture.sniff_continuously():
-        #     print(".", end="")
-        #     if 'DNS' in packet.layers:
-        #         print(packet)
-        #     elif 'HTTP' in packet.layers:
-        #         print(packet)
+        #     print(packet)
+        layers_to_check = [
+            
+            ]
+
+        for packet in capture.sniff_continuously():
+            print(".", end="")
+            for l in packet.layers:
+                if l.layer_name in layers_to_check:
+                    print(f"\t Layer to check {l.layer_name}")
+                    print(l.pretty_print())
     
     def __capture_all(self, capture):
         for packet in capture.sniff_continuously():
