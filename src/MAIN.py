@@ -6,24 +6,17 @@ Created on 14 jun. 2018
 from utils.ConfigReader import ConfigReader
 import os
 
-# patrones
-from lectura_logs.patrones.connPatron import connPatron
-from lectura_logs.patrones.httpPatron import httpPatron
-from lectura_logs.patrones.sslPatron import sslPatron
-from lectura_logs.patrones.sshPatron import sshPatron
-from lectura_logs.patrones.dnsPatron import dnsPatron
-from lectura_logs.patrones.pcapLivePatron import pcapLivePatron
 from enviodatos.EnvioDatosLogstash import EnvioDatosLogstash
 from net.NetSniffer import NetSniffer
+# patrones
+from lectura_logs.patrones.connPatron import connPatron
+from lectura_logs.patrones.pcapLivePatron import pcapLivePatron
 
 # procesamiento de logs
 logs_patterns_types = {
     'conn': connPatron,
-    'http': httpPatron,
-    'ssl':sslPatron,
-    'ssh':sshPatron,
-    'dns':dnsPatron,
-    'pcap_live':pcapLivePatron
+    'pcap_live':pcapLivePatron,
+    # meter los patrones de lectura de logs aqui
 }
 
     

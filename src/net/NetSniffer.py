@@ -73,13 +73,31 @@ class NetSniffer(object):
         # for packet in capture.sniff_continuously():
         #     print(packet)
         layers_to_check = [
-            
+            # # si queremos comprobar las capas que nos interesan
+            # # ejemplos son:
+            # 'eth',
+            # 'http',
+            # 'json',
+            # 'dns', 
+            # 'arp',
+            # 'ftp',
+            # 'ssh',
+            # 'telnet', 
+            # 'icmp', 
+            # 'vnc',
+            # 'smtp'
             ]
 
         for packet in capture.sniff_continuously():
             print(".", end="")
             for l in packet.layers:
-                if l.layer_name in layers_to_check:
+                if len(layers_to_check) > 0:
+                    # si hay capas a comprobar, las comprobamos
+                    if l.layer_name in layers_to_check:
+                        print(f"\n\t Layer to check {l.layer_name}")
+                        print(l.pretty_print())
+                else:
+                    # si no hay capas a comprobar, las mostramos todas
                     print(f"\t Layer to check {l.layer_name}")
                     print(l.pretty_print())
     
