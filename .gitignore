@@ -3,7 +3,6 @@ captured_data/
 managed_context/
 test_suite_analysis/
 monitorizacion/
-conf/conf_tmp.ini
 conf/conf.ini
 
 # Byte-compiled / optimized / DLL files
