@@ -11,11 +11,16 @@ from net.NetSniffer import NetSniffer
 # patrones
 from lectura_logs.patrones.connPatron import connPatron
 from lectura_logs.patrones.pcapLivePatron import pcapLivePatron
+from lectura_logs.patrones.curso_2025.icmpPatron import icmpPatron
+from lectura_logs.patrones.curso_2025.imapPatron import imapPatron
 
 # procesamiento de logs
 logs_patterns_types = {
     'conn': connPatron,
     'pcap_live':pcapLivePatron,
+    # 2025
+    'icmp':icmpPatron,
+    'imap':imapPatron
     # meter los patrones de lectura de logs aqui
 }
 

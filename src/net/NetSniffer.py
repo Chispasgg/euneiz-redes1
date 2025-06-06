@@ -95,11 +95,15 @@ class NetSniffer(object):
                     # si hay capas a comprobar, las comprobamos
                     if l.layer_name in layers_to_check:
                         print(f"\n\t Layer to check {l.layer_name}")
+                        print("layer data:")
                         print(l.pretty_print())
+                        print("-----------------------------------------------")
                 else:
                     # si no hay capas a comprobar, las mostramos todas
                     print(f"\t Layer to check {l.layer_name}")
+                    print("layer data:")
                     print(l.pretty_print())
+                    print("-----------------------------------------------")
     
     def __capture_all(self, capture):
         for packet in capture.sniff_continuously():
