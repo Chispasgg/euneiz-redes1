@@ -1,8 +1,16 @@
 # euneiz-redes1 — Sniffer de Red
 
-Práctica de captura y análisis de tráfico de red en tiempo real para el Máster en Seguridad de EUNEIZ.
+Práctica de captura y análisis de tráfico de red en tiempo real para el Grado en Seguridad de EUNEIZ.
 
 El programa captura paquetes de una interfaz de red, los procesa según el protocolo elegido, los guarda en JSON local y, opcionalmente, los envía a un stack ELK (Elasticsearch + Logstash + Kibana) para su visualización.
+
+![Python](https://img.shields.io/badge/Python-3.8+-3776AB?logo=python&logoColor=white)
+![uv](https://img.shields.io/badge/uv-package%20manager-DE5FE9?logo=astral&logoColor=white)
+![Wireshark](https://img.shields.io/badge/tshark-Wireshark-1679A7?logo=wireshark&logoColor=white)
+![Elasticsearch](https://img.shields.io/badge/Elasticsearch-ELK%20Stack-005571?logo=elasticsearch&logoColor=white)
+![Kibana](https://img.shields.io/badge/Kibana-visualización-E8488B?logo=kibana&logoColor=white)
+![Docker](https://img.shields.io/badge/Docker-compose-2496ED?logo=docker&logoColor=white)
+![Linux](https://img.shields.io/badge/Linux-Ubuntu%2FDebian-FCC624?logo=linux&logoColor=black)
 
 ---
 
