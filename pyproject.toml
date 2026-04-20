@@ -4,6 +4,7 @@ version = "0.1.0"
 description = "Sniffer de red para prácticas de máster en seguridad"
 requires-python = ">=3.8"
 dependencies = [
+    "requests",
     "pyshark",
     "python-logstash",
 ]

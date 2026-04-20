@@ -1,4 +1,4 @@
-# euneiz-redes1 — Sniffer de Red
+# euneiz-redes1 - Sniffer de Red
 
 Práctica de captura y análisis de tráfico de red en tiempo real para el Grado en Seguridad de EUNEIZ.
 
