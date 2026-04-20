@@ -247,4 +247,11 @@ class NetSniffer(object):
         print(f'  {DM}(BPF = Berkeley Packet Filter, permite acotar qué paquetes capturar){R}')
         print(f'  {CY}Datos guardados en{R} : {GR}{self.project_name}{R}')
         print(f'{sep}\n')
-        self.__init_capture()
+        try:
+            self.__init_capture()
+        except KeyboardInterrupt:
+            print(f'\n\n{sep}')
+            print(f'  {YL}{B}Captura detenida por el usuario.{R}')
+            print(f'  {DM}Los paquetes capturados están guardados en:{R}')
+            print(f'  {GR}{self.project_name}{R}')
+            print(f'{sep}\n')
