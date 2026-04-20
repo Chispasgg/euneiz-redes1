@@ -1,3 +1,0 @@
-# necesario instalar tshark [sudo apt-get install tshark]
-pyshark
-python-logstash
