@@ -34,33 +34,13 @@ LAYER_COLOR = {
     'imap': MG, 'ftp': MG, 'ssh': MG, 'smtp': MG,
 }
 
-# Descripción educativa de las capas más comunes del modelo OSI/TCP-IP
-LAYER_INFO = {
-    'eth':  'Capa 2 (Enlace) — Trama Ethernet. Contiene MACs origen/destino.',
-    'ip':   'Capa 3 (Red)    — Paquete IP. Contiene IPs origen/destino y TTL.',
-    'ipv6': 'Capa 3 (Red)    — Paquete IPv6. Versión moderna del protocolo IP.',
-    'tcp':  'Capa 4 (Transporte) — Segmento TCP. Conexión fiable con puertos y flags.',
-    'udp':  'Capa 4 (Transporte) — Datagrama UDP. Sin conexión, más rápido que TCP.',
-    'icmp': 'Capa 3 (Red)    — Mensaje ICMP. Diagnóstico y control (ping, traceroute).',
-    'dns':  'Capa 7 (Aplicación) — Consulta/respuesta DNS. Traduce nombres a IPs.',
-    'http': 'Capa 7 (Aplicación) — Petición/respuesta HTTP. Tráfico web sin cifrar.',
-    'tls':  'Capa 7 (Aplicación) — TLS/SSL. Cifrado de la capa de transporte.',
-    'arp':  'Capa 2 (Enlace) — ARP. Resuelve IPs a MACs en la red local.',
-    'imap': 'Capa 7 (Aplicación) — IMAP. Protocolo de correo. Sin TLS, en texto claro.',
-    'ftp':  'Capa 7 (Aplicación) — FTP. Transferencia de ficheros, sin cifrado.',
-    'ssh':  'Capa 7 (Aplicación) — SSH. Acceso remoto cifrado.',
-    'smtp': 'Capa 7 (Aplicación) — SMTP. Envío de correo electrónico.',
-}
+def _load_json(path):
+    with open(path, encoding='utf-8') as f:
+        return json.load(f)
 
-# Interpretación de tipos ICMP más comunes
-ICMP_TYPES = {
-    '0':  'Echo Reply (respuesta a ping)',
-    '3':  'Destination Unreachable (destino inalcanzable)',
-    '5':  'Redirect (redirección de ruta)',
-    '8':  'Echo Request (ping)',
-    '11': 'Time Exceeded (TTL agotado — usado por traceroute)',
-    '12': 'Parameter Problem (error en cabecera IP)',
-}
+_conf_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', '..', 'conf')
+LAYER_INFO  = _load_json(os.path.join(_conf_dir, 'layer_info.json'))
+ICMP_TYPES  = _load_json(os.path.join(_conf_dir, 'icmp_types.json'))
 
 
 class NetSniffer(object):

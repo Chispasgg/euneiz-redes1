@@ -1,0 +1,30 @@
+{
+    "conn": {
+        "protocolo": "Ethernet",
+        "capa": "Capa 2 — Enlace de datos",
+        "descripcion": "Analiza tramas Ethernet. Permite ver las direcciones MAC de los dispositivos que se comunican directamente en la red local. El OUI (Organizationally Unique Identifier) identifica al fabricante del adaptador de red.",
+        "campos": "MAC origen, MAC destino, OUI fabricante, tipo de trama",
+        "ejemplo": "Útil para descubrir qué dispositivos hay en la red y a qué fabricante pertenece cada tarjeta de red."
+    },
+    "pcap_live": {
+        "protocolo": "Genérico (todas las capas)",
+        "capa": "Capas 2–7",
+        "descripcion": "Captura todos los paquetes sin filtrado de protocolo. Muestra la pila de capas completa de cada paquete tal como llega.",
+        "campos": "Todas las capas disponibles en cada paquete",
+        "ejemplo": "Útil para exploración inicial: ver qué protocolos circulan por la red."
+    },
+    "icmp": {
+        "protocolo": "ICMP (Internet Control Message Protocol)",
+        "capa": "Capa 3 — Red",
+        "descripcion": "ICMP es el protocolo de mensajes de control de Internet. No transporta datos de usuario, sino señales de diagnóstico y error. El comando \"ping\" usa ICMP tipo 8 (Echo Request) y tipo 0 (Echo Reply). Traceroute usa ICMP tipo 11 (Time Exceeded).",
+        "campos": "type, code, checksum, ident, seq, data",
+        "ejemplo": "Ejecuta \"ping 8.8.8.8\" en otro terminal y verás los paquetes aparecer aquí."
+    },
+    "imap": {
+        "protocolo": "IMAP (Internet Message Access Protocol)",
+        "capa": "Capa 7 — Aplicación",
+        "descripcion": "IMAP es el protocolo para leer correo electrónico desde un servidor. Sin TLS/SSL, las credenciales (usuario y contraseña) viajan en texto claro por la red y son completamente visibles para cualquier sniffer. Este patrón demuestra ese riesgo.",
+        "campos": "comando, usuario, contraseña, tag, línea completa",
+        "ejemplo": "⚠️  Las credenciales capturadas aquí son visibles porque IMAP sin cifrado no protege los datos en tránsito."
+    }
+}

@@ -1,0 +1,8 @@
+{
+    "0":  "Echo Reply (respuesta a ping)",
+    "3":  "Destination Unreachable (destino inalcanzable)",
+    "5":  "Redirect (redirección de ruta)",
+    "8":  "Echo Request (ping)",
+    "11": "Time Exceeded (TTL agotado — usado por traceroute)",
+    "12": "Parameter Problem (error en cabecera IP)"
+}
