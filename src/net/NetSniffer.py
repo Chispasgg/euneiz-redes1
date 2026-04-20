@@ -132,6 +132,9 @@ class NetSniffer(object):
             if name == 'imap' and hasattr(layer, 'request_command'):
                 print(f'             ⚠️  Comando IMAP visible: {layer.request_command}')
 
+            print('          Datos de la capa:')
+            layer.pretty_print()
+
         print(f'  {"─" * 56}')
 
     def __capture_resume(self, capture):
