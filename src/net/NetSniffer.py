@@ -12,6 +12,7 @@ import pyshark
 import json
 import os
 import time
+import asyncio
 
 # Colores ANSI
 R  = '\033[0m'
@@ -222,11 +223,22 @@ class NetSniffer(object):
 
     def __init_capture(self):
         
+        # Silencia el EOFError que pyshark lanza en sus tareas async al cerrar tshark con Ctrl+C
+        try:
+            loop = asyncio.get_event_loop()
+        except RuntimeError:
+            loop = asyncio.new_event_loop()
+            asyncio.set_event_loop(loop)
+        loop.set_exception_handler(
+            lambda lp, ctx: None if isinstance(ctx.get('exception'), EOFError)
+            else lp.default_exception_handler(ctx)
+        )
+
         capture = pyshark.LiveCapture(
             interface=self.interfaces,
             bpf_filter=self.filters
             )
-        
+
         if self.solo_resumen:
             self.__capture_resume(capture)
         else:
