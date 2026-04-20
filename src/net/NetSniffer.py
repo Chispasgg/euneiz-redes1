@@ -12,6 +12,26 @@ import pyshark
 import json
 import os
 
+# Colores ANSI
+R  = '\033[0m'
+B  = '\033[1m'
+DM = '\033[2m'
+CY = '\033[96m'
+GR = '\033[92m'
+YL = '\033[93m'
+MG = '\033[95m'
+RD = '\033[91m'
+BL = '\033[94m'
+
+# Color por capa OSI
+LAYER_COLOR = {
+    'eth': BL, 'arp': BL,
+    'ip': GR, 'ipv6': GR, 'icmp': GR,
+    'tcp': YL, 'udp': YL,
+    'dns': MG, 'http': MG, 'tls': MG,
+    'imap': MG, 'ftp': MG, 'ssh': MG, 'smtp': MG,
+}
+
 # Descripción educativa de las capas más comunes del modelo OSI/TCP-IP
 LAYER_INFO = {
     'eth':  'Capa 2 (Enlace) — Trama Ethernet. Contiene MACs origen/destino.',
@@ -99,48 +119,50 @@ class NetSniffer(object):
     def __describe_packet(self, packet):
         """Imprime un resumen educativo de las capas del paquete."""
         layer_names = [l.layer_name for l in packet.layers]
-        pila = ' → '.join(layer_names).upper()
-        print(f'\n  Paquete capturado | Pila de protocolos: {pila}')
+        pila = ' → '.join(f'{LAYER_COLOR.get(n, R)}{n.upper()}{R}' for n in layer_names)
+        print(f'\n  {B}Paquete capturado{R} | Pila: {pila}')
 
         for layer in packet.layers:
             name = layer.layer_name
+            color = LAYER_COLOR.get(name, R)
             desc = LAYER_INFO.get(name, f'Capa desconocida: {name}')
-            print(f'    [{name.upper():8}] {desc}')
+            print(f'    {color}{B}[{name.upper():8}]{R} {desc}')
 
             # anotaciones específicas por protocolo
             if name == 'icmp' and hasattr(layer, 'type'):
                 tipo = str(layer.type)
                 significado = ICMP_TYPES.get(tipo, 'Tipo no común')
-                print(f'             → Tipo ICMP {tipo}: {significado}')
+                print(f'             {GR}→ Tipo ICMP {B}{tipo}{R}{GR}: {significado}{R}')
 
             if name == 'ip' and hasattr(layer, 'src') and hasattr(layer, 'dst'):
-                print(f'             → {layer.src} → {layer.dst}  (TTL: {getattr(layer, "ttl", "?")})')
+                ttl = getattr(layer, 'ttl', '?')
+                print(f'             {GR}→ {B}{layer.src}{R}{GR} → {B}{layer.dst}{R}{GR}  (TTL: {ttl}){R}')
 
             if name == 'eth' and hasattr(layer, 'src') and hasattr(layer, 'dst'):
-                print(f'             → MAC src: {layer.src}  |  MAC dst: {layer.dst}')
+                print(f'             {BL}→ MAC src: {B}{layer.src}{R}{BL}  |  MAC dst: {B}{layer.dst}{R}')
 
             if name == 'tcp' and hasattr(layer, 'srcport') and hasattr(layer, 'dstport'):
                 flags = getattr(layer, 'flags_str', '')
-                print(f'             → Puerto {layer.srcport} → {layer.dstport}  flags: {flags}')
+                print(f'             {YL}→ Puerto {B}{layer.srcport}{R}{YL} → {B}{layer.dstport}{R}{YL}  flags: {flags}{R}')
 
             if name == 'udp' and hasattr(layer, 'srcport') and hasattr(layer, 'dstport'):
-                print(f'             → Puerto {layer.srcport} → {layer.dstport}')
+                print(f'             {YL}→ Puerto {B}{layer.srcport}{R}{YL} → {B}{layer.dstport}{R}')
 
             if name == 'dns' and hasattr(layer, 'qry_name'):
-                print(f'             → Consulta DNS: {layer.qry_name}')
+                print(f'             {MG}→ Consulta DNS: {B}{layer.qry_name}{R}')
 
             if name == 'imap' and hasattr(layer, 'request_command'):
-                print(f'             ⚠️  Comando IMAP visible: {layer.request_command}')
+                print(f'             {RD}{B}⚠️  Comando IMAP visible: {layer.request_command}{R}')
 
-            print('          Datos de la capa:')
+            print(f'          {DM}Datos de la capa:{R}')
             layer.pretty_print()
 
-        print(f'  {"─" * 56}')
+        print(f'  {DM}{"─" * 56}{R}')
 
     def __capture_resume(self, capture):
-        print('\n  Escuchando la red. Cada línea es un paquete capturado.')
-        print('  Pulsa Ctrl+C para detener la captura.\n')
-        print(f'  {"─" * 56}')
+        print(f'\n  {CY}Escuchando la red.{R} Cada bloque es un paquete capturado.')
+        print(f'  Pulsa {YL}Ctrl+C{R} para detener la captura.\n')
+        print(f'  {DM}{"─" * 56}{R}')
 
         layers_to_check = []
 
@@ -187,14 +209,14 @@ class NetSniffer(object):
             archivo.write('\n')
 
         campos = {k: v for k, v in packet_data.items() if v and k not in ('db_name', 'layer_name')}
-        resumen = '  |  '.join(f'{k}: {v}' for k, v in list(campos.items())[:4])
-        print(f'  [GUARDADO] {resumen}')
+        resumen = '  |  '.join(f'{CY}{k}{R}: {YL}{v}{R}' for k, v in list(campos.items())[:4])
+        print(f'  {GR}{B}[GUARDADO]{R} {resumen}')
 
         if self.monitor_system:
             packet_data['indice'] = 'redes1'
             clase_name = self.project_name.replace(f'{self.base_folder}/', '').replace('.json', '')
             self.monitor_system.send_data(clase_name, packet_data)
-            print(f'  [LOGSTASH] Paquete enviado al sistema de monitorización')
+            print(f'  {MG}[LOGSTASH]{R} Paquete enviado al sistema de monitorización')
 
     def __init_capture(self):
         
@@ -209,19 +231,18 @@ class NetSniffer(object):
             self.__capture_all(capture)
     
     def comenzar(self):
-        sep = '─' * 60
+        sep = f'{CY}{"─" * 60}{R}'
         print(f'\n{sep}')
-        print('  ¿QUÉ ES UN SNIFFER?')
-        print('  Un sniffer (o analizador de paquetes) captura el tráfico')
-        print('  que circula por una interfaz de red. Permite inspeccionar')
-        print('  los protocolos y datos de cada comunicación en tiempo real.')
+        print(f'  {B}{CY}¿QUÉ ES UN SNIFFER?{R}')
+        print(f'  Un sniffer (o analizador de paquetes) captura el tráfico')
+        print(f'  que circula por una interfaz de red. Permite inspeccionar')
+        print(f'  los protocolos y datos de cada comunicación en tiempo real.')
         print(f'{sep}')
-        print(f'  Interfaz escuchada : {", ".join(self.interfaces)}')
-        ifaces_info = '  (la interfaz es el adaptador de red físico o virtual que recibe los paquetes)'
-        print(ifaces_info)
-        filtro = self.filters if self.filters else 'ninguno — se captura todo el tráfico'
-        print(f'  Filtro BPF activo  : {filtro}')
-        print('  (BPF = Berkeley Packet Filter, permite acotar qué paquetes capturar)')
-        print(f'  Datos guardados en : {self.project_name}')
+        print(f'  {CY}Interfaz escuchada{R} : {YL}{B}{", ".join(self.interfaces)}{R}')
+        print(f'  {DM}(la interfaz es el adaptador de red físico o virtual que recibe los paquetes){R}')
+        filtro = self.filters if self.filters else f'{DM}ninguno — se captura todo el tráfico{R}'
+        print(f'  {CY}Filtro BPF activo{R}  : {YL}{filtro}{R}')
+        print(f'  {DM}(BPF = Berkeley Packet Filter, permite acotar qué paquetes capturar){R}')
+        print(f'  {CY}Datos guardados en{R} : {GR}{self.project_name}{R}')
         print(f'{sep}\n')
         self.__init_capture()

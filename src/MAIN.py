@@ -6,6 +6,16 @@ Created on 14 jun. 2018
 from utils.ConfigReader import ConfigReader
 import os
 
+# Colores ANSI
+R  = '\033[0m'       # reset
+B  = '\033[1m'       # bold
+DM = '\033[2m'       # dim
+CY = '\033[96m'      # cyan
+GR = '\033[92m'      # verde
+YL = '\033[93m'      # amarillo
+MG = '\033[95m'      # magenta
+RD = '\033[91m'      # rojo
+
 from enviodatos.EnvioDatosLogstash import EnvioDatosLogstash
 from net.NetSniffer import NetSniffer
 # patrones
@@ -66,9 +76,9 @@ def __get_current_log_patterns(log_type, log_path):
     try:
         return logs_patterns_types[log_type](log_path)
     except KeyError:
-        print(f'\n[ERROR] El patrón "{log_type}" no existe.')
-        print(f'        Patrones disponibles: {", ".join(logs_patterns_types.keys())}')
-        print(f'        Revisa el valor de "log_type" en conf/conf.ini')
+        print(f'\n{RD}{B}[ERROR]{R} El patrón "{RD}{log_type}{R}" no existe.')
+        print(f'        Patrones disponibles: {YL}{", ".join(logs_patterns_types.keys())}{R}')
+        print(f'        Revisa el valor de {CY}log_type{R} en conf/conf.ini')
         exit(0)
 
 
@@ -76,35 +86,35 @@ def __print_patron_info(log_type):
     info = PATRON_INFO.get(log_type)
     if not info:
         return
-    sep = '─' * 60
+    sep = f'{CY}{"─" * 60}{R}'
     print(f'\n{sep}')
-    print(f'  PATRÓN ACTIVO  : {log_type.upper()}')
-    print(f'  Protocolo      : {info["protocolo"]}')
-    print(f'  Capa OSI       : {info["capa"]}')
-    print(f'  Campos         : {info["campos"]}')
+    print(f'  {B}{CY}PATRÓN ACTIVO{R}  : {B}{YL}{log_type.upper()}{R}')
+    print(f'  {CY}Protocolo{R}      : {GR}{info["protocolo"]}{R}')
+    print(f'  {CY}Capa OSI{R}       : {MG}{info["capa"]}{R}')
+    print(f'  {CY}Campos{R}         : {DM}{info["campos"]}{R}')
     print(f'{sep}')
     print(f'  {info["descripcion"]}')
-    print(f'\n  {info["ejemplo"]}')
+    print(f'\n  {YL}{info["ejemplo"]}{R}')
     print(f'{sep}\n')
 
 
 if __name__ == '__main__':
-    print('INICIO')
-    
+    print(f'{CY}Iniciando...{R}')
+
     # cargamos la configuracion
     config_file = (os.path.dirname(os.path.realpath(__file__)).replace('/src', '')) + '/conf/conf.ini'
     config = ConfigReader(config_file)
-#     print(config.sections())
 
     print("")
-    print(r"  _           _____   _____  _____  ")
-    print(r" | |         |  __ \ / ____|/ ____| ")
-    print(r" | |__  _   _| |__) | |  __| |  __  ")
-    print(r" | '_ \| | | |  ___/| | |_ | | |_ | ")
-    print(r" | |_) | |_| | |    | |__| | |__| | ")
-    print(r" |_.__/ \__, |_|     \_____|\_____| ")
-    print(r"         __/ |                      ")
-    print(r"        |___/                       ")
+    print(f'{B}{CY}' + r"  _           _____   _____  _____  " + f'{R}')
+    print(f'{B}{CY}' + r" | |         |  __ \ / ____|/ ____| " + f'{R}')
+    print(f'{B}{CY}' + r" | |__  _   _| |__) | |  __| |  __  " + f'{R}')
+    print(f'{B}{CY}' + r" | '_ \| | | |  ___/| | |_ | | |_ | " + f'{R}')
+    print(f'{B}{CY}' + r" | |_) | |_| | |    | |__| | |__| | " + f'{R}')
+    print(f'{B}{CY}' + r" |_.__/ \__, |_|     \_____|\_____| " + f'{R}')
+    print(f'{B}{CY}' + r"         __/ |                      " + f'{R}')
+    print(f'{B}{CY}' + r"        |___/                       " + f'{R}')
+    print(f'{DM}  Sniffer de red — Grado en Seguridad EUNEIZ{R}')
     print("")
     
     debug_mode = config.getBoolean('GlobalConfig', 'debug_mode')
@@ -123,6 +133,7 @@ if __name__ == '__main__':
         monitor_system_ip = config.ConfigSectionMap('MonitorSystem')['monitor_ip']
         monitor_system_port = config.ConfigSectionMap('MonitorSystem')['monitor_port']
         envio_de_datos = EnvioDatosLogstash(monitor_system_ip, monitor_system_port)
+        print(f'  {GR}[MONITOR]{R} Logstash activo en {CY}{monitor_system_ip}:{monitor_system_port}{R}')
     
     # sistema de obtencion de datos
     project_name = config.ConfigSectionMap('App')['project_name']
@@ -139,5 +150,5 @@ if __name__ == '__main__':
         net_summarize = config.getBoolean('App', 'net_summarize')
     __launch_net_process(debug_mode, envio_de_datos, project_name, log_type, interfaces, custome_filters, net_summarize)
 
-    print('\n── Captura finalizada ──')
-    print('FIN')
+    print(f'\n{CY}── Captura finalizada ──{R}')
+    print(f'{DM}FIN{R}')
