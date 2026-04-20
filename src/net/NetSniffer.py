@@ -11,6 +11,7 @@ curl -XPUT 'localhost:9200/my_index/_settings' -H 'Content-Type: application/jso
 import pyshark
 import json
 import os
+import time
 
 # Colores ANSI
 R  = '\033[0m'
@@ -161,7 +162,8 @@ class NetSniffer(object):
 
     def __capture_resume(self, capture):
         print(f'\n  {CY}Escuchando la red.{R} Cada bloque es un paquete capturado.')
-        print(f'  Pulsa {YL}Ctrl+C{R} para detener la captura.\n')
+        print(f'  Pulsa {YL}Ctrl+C{R} para detener la captura.')
+        time.sleep(10)
         print(f'  {DM}{"─" * 56}{R}')
 
         layers_to_check = []
